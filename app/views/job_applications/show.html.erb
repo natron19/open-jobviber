@@ -1,0 +1,66 @@
+<div class="d-flex justify-content-between align-items-start mb-4">
+  <div>
+    <h1 class="h3 mb-1"><%= @application.job_title %></h1>
+    <p class="text-muted mb-0"><%= @application.company %></p>
+  </div>
+  <div class="d-flex gap-2">
+    <%= link_to "Edit", edit_application_path(@application), class: "btn btn-outline-secondary btn-sm" %>
+    <%= button_to "Delete", application_path(@application), method: :delete,
+          data: { turbo_confirm: "Delete this application and all its cover letters and resumes?" },
+          class: "btn btn-outline-danger btn-sm" %>
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-8">
+    <div class="card">
+      <div class="card-body">
+        <div class="row g-3 mb-4">
+          <div class="col-sm-4">
+            <div class="text-muted small mb-1">Status</div>
+            <span class="badge bg-secondary"><%= @application.status.capitalize %></span>
+          </div>
+          <% if @application.applied_on %>
+            <div class="col-sm-4">
+              <div class="text-muted small mb-1">Applied</div>
+              <div><%= @application.applied_on.strftime("%B %-d, %Y") %></div>
+            </div>
+          <% end %>
+          <% if @application.url.present? %>
+            <div class="col-sm-4">
+              <div class="text-muted small mb-1">Posting</div>
+              <div><%= link_to "View job posting →", @application.url,
+                    target: "_blank", rel: "noopener noreferrer" %></div>
+            </div>
+          <% end %>
+        </div>
+
+        <% if @application.job_description.present? %>
+          <div class="mb-4">
+            <div class="text-muted small mb-1">Job Description</div>
+            <div class="bg-body-secondary rounded p-3"
+                 style="white-space: pre-wrap; font-size: 0.9rem;"><%= @application.job_description %></div>
+          </div>
+        <% end %>
+
+        <% if @application.notes.present? %>
+          <div>
+            <div class="text-muted small mb-1">Notes</div>
+            <div class="bg-body-secondary rounded p-3"
+                 style="white-space: pre-wrap;"><%= @application.notes %></div>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-4">
+    <%= turbo_frame_tag "cover_letters_#{@application.id}" do %>
+      <%= render "cover_letters/cover_letters", application: @application, profile: @profile %>
+    <% end %>
+
+    <%= turbo_frame_tag "resumes_#{@application.id}" do %>
+      <%= render "resumes/resumes", application: @application, profile: @profile %>
+    <% end %>
+  </div>
+</div>

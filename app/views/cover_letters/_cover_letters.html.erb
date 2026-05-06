@@ -1,0 +1,33 @@
+<h6 class="fw-semibold mb-3">Cover Letters</h6>
+
+<% if profile&.background_summary.blank? %>
+  <div class="alert alert-info small">
+    <%= link_to "Set up your profile", edit_profile_path %> before generating a cover letter.
+    Gemini needs your background and skills to write a personalized letter.
+  </div>
+<% else %>
+  <%= form_with url: application_cover_letters_path(application),
+                data: { turbo_frame: "cover_letters_#{application.id}" } do |f| %>
+    <div class="mb-3">
+      <p class="small text-muted mb-2">Tone</p>
+      <div class="d-flex gap-3">
+        <% CoverLetter::TONES.each_with_index do |tone, i| %>
+          <div class="form-check">
+            <input class="form-check-input" type="radio" name="tone"
+                   id="tone_<%= tone %>_<%= application.id %>"
+                   value="<%= tone %>"
+                   <%= "checked" if i == 0 %>>
+            <label class="form-check-label small" for="tone_<%= tone %>_<%= application.id %>">
+              <%= tone.capitalize %>
+            </label>
+          </div>
+        <% end %>
+      </div>
+    </div>
+    <button type="submit" class="btn btn-primary btn-sm w-100 mb-4">Generate cover letter</button>
+  <% end %>
+
+  <% application.cover_letters.order(created_at: :desc).each do |cover_letter| %>
+    <%= render "cover_letters/cover_letter", cover_letter: cover_letter, application: application %>
+  <% end %>
+<% end %>

@@ -1,0 +1,88 @@
+<div class="row justify-content-center">
+  <div class="col-lg-8">
+    <h1 class="h3 mb-4">Edit Profile</h1>
+
+    <div class="card">
+      <div class="card-body">
+        <%= form_with model: @profile, url: profile_path, method: :patch do |f| %>
+          <% if @profile.errors.any? %>
+            <div class="alert alert-danger">
+              <ul class="mb-0">
+                <% @profile.errors.full_messages.each do |msg| %>
+                  <li><%= msg %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <p class="text-muted small mb-4">
+            The more specific your background summary and skills, the more accurate your cover letters will be.
+          </p>
+
+          <div class="mb-3" data-controller="character-count" data-character-count-max-value="4000">
+            <label class="form-label d-flex justify-content-between">
+              <span>Background Summary</span>
+              <span class="text-muted small">
+                <span data-character-count-target="counter">4000</span> chars remaining
+              </span>
+            </label>
+            <%= f.text_area :background_summary,
+                  class: "form-control",
+                  rows: 10,
+                  maxlength: 4000,
+                  data: { "character-count-target": "input", action: "input->character-count#update" } %>
+          </div>
+
+          <div class="mb-4" data-controller="character-count" data-character-count-max-value="500">
+            <label class="form-label d-flex justify-content-between">
+              <span>Key Skills</span>
+              <span class="text-muted small">
+                <span data-character-count-target="counter">500</span> chars remaining
+              </span>
+            </label>
+            <%= f.text_area :key_skills,
+                  class: "form-control",
+                  rows: 3,
+                  maxlength: 500,
+                  data: { "character-count-target": "input", action: "input->character-count#update" } %>
+          </div>
+
+          <div class="mb-3" data-controller="character-count" data-character-count-max-value="6000">
+            <label class="form-label d-flex justify-content-between">
+              <span>Work History <span class="text-muted fw-normal">(optional — used for resume generation)</span></span>
+              <span class="text-muted small">
+                <span data-character-count-target="counter">6000</span> chars remaining
+              </span>
+            </label>
+            <%= f.text_area :work_history,
+                  class: "form-control",
+                  rows: 10,
+                  maxlength: 6000,
+                  placeholder: "List your roles, companies, dates, and key responsibilities. The more specific, the better — Gemini will only use what you write here.",
+                  data: { "character-count-target": "input", action: "input->character-count#update" } %>
+          </div>
+
+          <div class="mb-4" data-controller="character-count" data-character-count-max-value="2000">
+            <label class="form-label d-flex justify-content-between">
+              <span>Education <span class="text-muted fw-normal">(optional)</span></span>
+              <span class="text-muted small">
+                <span data-character-count-target="counter">2000</span> chars remaining
+              </span>
+            </label>
+            <%= f.text_area :education,
+                  class: "form-control",
+                  rows: 4,
+                  maxlength: 2000,
+                  placeholder: "Degrees, institutions, graduation years, relevant coursework.",
+                  data: { "character-count-target": "input", action: "input->character-count#update" } %>
+          </div>
+
+          <div class="d-flex gap-2">
+            <%= f.submit "Save profile", class: "btn btn-primary" %>
+            <%= link_to "Cancel", profile_path, class: "btn btn-outline-secondary" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

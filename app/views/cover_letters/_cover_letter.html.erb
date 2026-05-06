@@ -1,0 +1,45 @@
+<div id="cover_letter_<%= cover_letter.id %>" class="card mb-3"
+     style="border-left: 4px solid var(--accent)">
+  <div class="card-header d-flex align-items-center justify-content-between">
+    <span class="text-muted small"><%= cover_letter.created_at.strftime("%b %-d, %Y") %></span>
+    <% badge_class = case cover_letter.tone
+       when "conversational" then "bg-info text-dark"
+       when "concise" then "bg-dark"
+       else "bg-secondary"
+       end %>
+    <span class="badge <%= badge_class %>"><%= cover_letter.tone.capitalize %></span>
+  </div>
+  <div class="card-body">
+    <div data-controller="clipboard">
+      <div class="cover-letter-body mb-3"
+           data-clipboard-target="source"><%= cover_letter.body %></div>
+
+      <p class="text-warning-emphasis small mb-3">
+        Review this letter before sending. AI-generated letters may include inaccurate phrasing
+        or claims not reflected in your actual experience.
+      </p>
+
+      <div class="d-flex flex-wrap gap-2 mb-3">
+        <button class="btn btn-sm btn-outline-secondary"
+                data-clipboard-target="button"
+                data-action="click->clipboard#copy">
+          Copy to clipboard
+        </button>
+        <button class="btn btn-sm btn-outline-secondary" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#raw_<%= cover_letter.id %>">
+          Show raw response
+        </button>
+        <%= button_to "Delete",
+              application_cover_letter_path(application, cover_letter),
+              method: :delete,
+              data: { turbo_confirm: "Delete this cover letter?" },
+              class: "btn btn-sm btn-outline-danger ms-auto" %>
+      </div>
+
+      <div class="collapse" id="raw_<%= cover_letter.id %>">
+        <pre class="bg-body-secondary rounded p-3 small" style="white-space: pre-wrap"><%= cover_letter.gemini_raw %></pre>
+      </div>
+    </div>
+  </div>
+</div>

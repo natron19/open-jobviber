@@ -1,0 +1,54 @@
+<div class="text-center py-5">
+  <h1 class="display-4 fw-bold mb-2"><%= ENV.fetch("APP_NAME", "JobViber Demo") %></h1>
+  <p class="lead text-muted mb-1"><%= ENV.fetch("APP_TAGLINE", "Track your applications. Let AI write the cover letter.") %></p>
+  <p class="text-muted mb-4"><%= ENV.fetch("APP_DESCRIPTION", "A kanban job tracker with AI cover letter generation.") %></p>
+  <div class="d-flex justify-content-center gap-3">
+    <% if signed_in? %>
+      <%= link_to "Go to my board", board_path, class: "btn btn-primary btn-lg" %>
+    <% else %>
+      <%= link_to "Get started", sign_up_path, class: "btn btn-primary btn-lg" %>
+      <%= link_to "Sign in", sign_in_path, class: "btn btn-outline-secondary btn-lg" %>
+    <% end %>
+  </div>
+</div>
+
+<div class="row g-4 py-4">
+  <div class="col-md-4">
+    <div class="card h-100 border-0 bg-body-tertiary">
+      <div class="card-body p-4">
+        <div class="fs-2 mb-3">&#x1f4cb;</div>
+        <h5 class="card-title fw-semibold">Kanban tracker</h5>
+        <p class="card-text text-muted">
+          Four columns — Applied, Interviewing, Offer, Rejected. Drag cards across columns
+          or use the move menu. Every application in one place.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card h-100 border-0 bg-body-tertiary">
+      <div class="card-body p-4">
+        <div class="fs-2 mb-3">&#x2728;</div>
+        <h5 class="card-title fw-semibold">AI cover letters</h5>
+        <p class="card-text text-muted">
+          One template, three tones — confident, conversational, concise. Paste the job
+          description, click generate, get a personalized letter in seconds.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-md-4">
+    <div class="card h-100 border-0 bg-body-tertiary">
+      <div class="card-body p-4">
+        <div class="fs-2 mb-3">&#x1f513;</div>
+        <h5 class="card-title fw-semibold">Open source</h5>
+        <p class="card-text text-muted">
+          MIT licensed. Clone it, run it locally, edit the prompt in the admin panel.
+          No vendor lock-in — just Rails, Gemini, and your own data.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,23 @@
+<h6 class="fw-semibold mb-3">Tailored Resume</h6>
+
+<% if profile&.background_summary.blank? %>
+  <div class="alert alert-info small">
+    <%= link_to "Set up your profile", edit_profile_path %> before generating a resume.
+    Gemini needs your background and skills to write a personalized document.
+  </div>
+<% else %>
+  <% if profile.work_history.blank? %>
+    <div class="alert alert-warning small mb-3">
+      Add your <strong>Work History</strong> in <%= link_to "your profile", edit_profile_path %> for a more complete resume.
+    </div>
+  <% end %>
+
+  <%= form_with url: application_resumes_path(application),
+                data: { turbo_frame: "resumes_#{application.id}" } do |f| %>
+    <button type="submit" class="btn btn-primary btn-sm w-100 mb-4">Generate tailored resume</button>
+  <% end %>
+
+  <% application.resumes.order(created_at: :desc).each do |resume| %>
+    <%= render "resumes/resume", resume: resume, application: application %>
+  <% end %>
+<% end %>

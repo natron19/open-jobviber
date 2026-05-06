@@ -1,0 +1,59 @@
+<%= form_with model: application,
+              url: application.new_record? ? applications_path : application_path(application) do |f| %>
+  <% if application.errors.any? %>
+    <div class="alert alert-danger">
+      <ul class="mb-0">
+        <% application.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-3">
+    <%= f.label :job_title, class: "form-label" %>
+    <%= f.text_field :job_title, class: "form-control", required: true %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :company, class: "form-label" %>
+    <%= f.text_field :company, class: "form-control", required: true %>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col-md-6">
+      <%= f.label :status, class: "form-label" %>
+      <%= f.select :status,
+            JobApplication::STATUSES.map { |s| [s.capitalize, s] },
+            {},
+            class: "form-select" %>
+    </div>
+    <div class="col-md-6">
+      <%= f.label :applied_on, "Applied on", class: "form-label" %>
+      <%= f.date_field :applied_on, class: "form-control" %>
+    </div>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :url, "Job posting URL", class: "form-label" %>
+    <%= f.text_field :url, class: "form-control", placeholder: "https://..." %>
+  </div>
+
+  <div class="mb-3">
+    <%= f.label :job_description, class: "form-label" %>
+    <%= f.text_area :job_description, class: "form-control", rows: 10,
+          placeholder: "Paste the job description here…" %>
+  </div>
+
+  <div class="mb-4">
+    <%= f.label :notes, "Notes (private)", class: "form-label" %>
+    <%= f.text_area :notes, class: "form-control", rows: 4,
+          placeholder: "Interview notes, contacts, follow-ups…" %>
+  </div>
+
+  <div class="d-flex gap-2">
+    <%= f.submit(application.new_record? ? "Add application" : "Save changes",
+          class: "btn btn-primary") %>
+    <%= link_to "Cancel", board_path, class: "btn btn-outline-secondary" %>
+  </div>
+<% end %>

@@ -1,0 +1,20 @@
+<div class="kanban-board d-flex gap-3 pb-3" data-controller="kanban">
+  <% JobApplication::STATUSES.each do |status| %>
+    <div class="kanban-column flex-shrink-0"
+         data-status="<%= status %>"
+         data-action="dragover->kanban#dragover drop->kanban#drop">
+
+      <h6 class="fw-semibold mb-3 text-capitalize<% if status == "offer" %> text-success<% elsif status == "rejected" %> text-muted<% end %>"
+          <% if status == "interviewing" %>style="color: #ca8a04"<% end %>>
+        <%= status.capitalize %>
+        <span class="badge bg-secondary ms-1 fw-normal"><%= columns[status].size %></span>
+      </h6>
+
+      <% if columns[status].empty? %>
+        <p class="text-muted small fst-italic">No applications</p>
+      <% else %>
+        <%= render partial: "board/card", collection: columns[status], as: :application %>
+      <% end %>
+    </div>
+  <% end %>
+</div>

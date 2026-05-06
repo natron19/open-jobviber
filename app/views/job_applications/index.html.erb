@@ -1,0 +1,38 @@
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <h1 class="h3 mb-0">All Applications</h1>
+  <%= link_to "New application", new_application_path, class: "btn btn-primary btn-sm" %>
+</div>
+
+<% if @applications.empty? %>
+  <p class="text-muted">No applications yet. <%= link_to "Add one", new_application_path %> to get started.</p>
+<% else %>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead>
+        <tr>
+          <th>Job Title</th>
+          <th>Company</th>
+          <th>Status</th>
+          <th>Applied</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @applications.each do |app| %>
+          <tr>
+            <td><%= link_to app.job_title, application_path(app) %></td>
+            <td><%= app.company %></td>
+            <td><span class="badge bg-secondary"><%= app.status.capitalize %></span></td>
+            <td><%= app.applied_on&.strftime("%b %-d, %Y") || "—" %></td>
+            <td class="text-end">
+              <%= link_to "Edit", edit_application_path(app), class: "btn btn-sm btn-outline-secondary" %>
+              <%= button_to "Delete", application_path(app), method: :delete,
+                    data: { turbo_confirm: "Delete this application?" },
+                    class: "btn btn-sm btn-outline-danger" %>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </div>
+<% end %>

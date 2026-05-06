@@ -1,0 +1,41 @@
+<div id="resume_<%= resume.id %>" class="card mb-3"
+     style="border-left: 4px solid var(--accent)">
+  <div class="card-header d-flex align-items-center justify-content-between">
+    <span class="text-muted small"><%= resume.created_at.strftime("%b %-d, %Y") %></span>
+    <span class="badge bg-secondary">Resume</span>
+  </div>
+  <div class="card-body">
+    <div data-controller="clipboard">
+      <pre class="cover-letter-body mb-3"
+           style="white-space: pre-wrap; font-family: inherit; font-size: inherit;"
+           data-clipboard-target="source"><%= resume.body %></pre>
+
+      <p class="text-warning-emphasis small mb-3">
+        Review before sending. This resume is based only on what you entered in your profile —
+        verify all details are accurate before submitting to employers.
+      </p>
+
+      <div class="d-flex flex-wrap gap-2 mb-3">
+        <button class="btn btn-sm btn-outline-secondary"
+                data-clipboard-target="button"
+                data-action="click->clipboard#copy">
+          Copy to clipboard
+        </button>
+        <button class="btn btn-sm btn-outline-secondary" type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#raw_resume_<%= resume.id %>">
+          Show raw response
+        </button>
+        <%= button_to "Delete",
+              application_resume_path(application, resume),
+              method: :delete,
+              data: { turbo_confirm: "Delete this resume?" },
+              class: "btn btn-sm btn-outline-danger ms-auto" %>
+      </div>
+
+      <div class="collapse" id="raw_resume_<%= resume.id %>">
+        <pre class="bg-body-secondary rounded p-3 small" style="white-space: pre-wrap"><%= resume.gemini_raw %></pre>
+      </div>
+    </div>
+  </div>
+</div>
