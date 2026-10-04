@@ -1,0 +1,17 @@
+# Per-app guardrail configuration, read by AiGuardConfig.
+# See docs/ai-guardrails.md (Layer 1b: AiOutputGuard) and docs/ai-evals.md.
+
+# Job applications are not a personal-distress context, so no crisis routing.
+crisis_terms: []
+
+# Both JobViber templates return plain prose that is saved as-is (CoverLetter#body,
+# Resume#body); nothing parses JSON, so they get the generic output checks only.
+# Resume contact details typed into the profile are in the rendered prompt and
+# therefore allowed back by the PII check; anything the model invents is blocked.
+templates:
+  health_ping:
+    format: text
+  jobviber_cover_letter_v1:
+    format: text
+  jobviber_resume_v1:
+    format: text
